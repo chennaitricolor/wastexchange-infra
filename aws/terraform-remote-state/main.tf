@@ -3,6 +3,15 @@ provider "aws" {
   version = "~> 2.21"
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "wex-terraform-state-1564297303"
+    key            = "terraform-remote-state/terraform.tfstate"
+    region         = "us-east-2"
+    dynamodb_table = "wex-terraform-state-lock"
+  }
+}
+
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "wex-terraform-state-1564297303"
 
