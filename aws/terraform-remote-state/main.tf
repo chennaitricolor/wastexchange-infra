@@ -22,6 +22,12 @@ resource "aws_s3_bucket" "terraform_state" {
   lifecycle {
     prevent_destroy = true
   }
+
+  tags = {
+    Name        = "Waste Exchange Terraform State"
+    Environment = "All"
+    Terraform   = true
+  }
 }
 
 resource "aws_dynamodb_table" "terraform_state_lock" {
@@ -33,6 +39,12 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
   attribute {
     name = "LockID"
     type = "S"
+  }
+
+  tags = {
+    Name        = "Waste Exchange Terraform State Lock"
+    Environment = "All"
+    Terraform   = true
   }
 }
 
