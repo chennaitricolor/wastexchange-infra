@@ -54,6 +54,16 @@ resource "aws_iam_role_policy" "manage_terraform_state" {
           "ec2:Region": "${data.aws_region.current.name}"
         }
       }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "rds:*",
+      "Resource": ["arn:aws:rds:${data.aws_region.current.name}:*:*"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["rds:Describe*"],
+      "Resource": ["*"]
     }
   ]
 }
