@@ -71,3 +71,28 @@ resource "aws_instance" "app" {
     command = "ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook -i '${self.public_ip},' -u ${local.ssh_user} --private-key ${local.private_key_path} ./ansible/playbook.yaml"
   }
 }
+
+resource "random_string" "password" {
+  length           = 16
+  special          = true
+  override_special = "!#"
+}
+
+resource "aws_db_instance" "app" {
+  identifier          = "wastexchange-${local.environment}"
+  allocated_storage   = 20
+  storage_type        = "gp2"
+  engine              = "postgres"
+  engine_version      = "10.6"
+  instance_class      = "db.t2.micro"
+  name                = "wastexchange_${local.environment}"
+  username            = "wastexchange_${local.environment}"
+  password            = "${random_string.password.result}"
+  skip_final_snapshot = true
+
+  tags = {
+    Name        = "Waste Exchange App DB - ${local.environment}"
+    Environment = "${local.environment}"
+    Terraform   = true
+  }
+}
