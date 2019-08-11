@@ -44,9 +44,18 @@ resource "aws_iam_role_policy" "manage_terraform_state" {
         "dynamodb:DeleteItem"
       ],
       "Resource": "arn:aws:dynamodb:*:*:table/${local.tf_state_lock_table}"
+    },
+    {
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": "ec2:*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:Region": "${data.aws_region.current.name}"
+        }
+      }
     }
   ]
 }
 EOF
 }
-
