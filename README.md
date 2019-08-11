@@ -19,3 +19,5 @@ Infra setup for waste-exchange project.
 
 * Contains scripts for  creating EC2, RDS, Route53 etc for the application
 * Setup using the `terraform-deploy` role. Users of the AWS account can assume this role and apply the changes
+* Use terraform workspaces to switch between different environments. Available workspaces:
+    - staging
