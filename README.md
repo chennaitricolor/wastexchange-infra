@@ -15,9 +15,16 @@ Infra setup for waste-exchange project.
 * Conatains scripts for creating IAM roles used for managing AWS resources
 * Setup using AWS admin credentials
 
-### app
+### ec2
 
-* Contains scripts for  creating EC2, RDS, Route53 etc for the application
+* Contains scripts for creating EC2 instance for the app
+* Setup using the `terraform-deploy` role. Users of the AWS account can assume this role and apply the changes
+* Use terraform workspaces to switch between different environments. Available workspaces:
+    - staging
+
+## rds
+
+* Contains scripts for creating RDS (database) for the app
 * Setup using the `terraform-deploy` role. Users of the AWS account can assume this role and apply the changes
 * Use terraform workspaces to switch between different environments. Available workspaces:
     - staging
