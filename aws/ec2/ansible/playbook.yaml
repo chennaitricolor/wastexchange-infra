@@ -37,3 +37,15 @@
     - name: Install Docker Module for Python
       pip:
         name: docker
+
+    - name: Add Letsencrypt certbot Repositories
+      apt_repository:
+        repo: ppa:certbot/certbot
+        state: present
+
+    - name: Update apt and install certbot
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop: [ 'certbot', 'python-certbot-nginx' ]
