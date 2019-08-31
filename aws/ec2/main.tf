@@ -25,7 +25,7 @@ terraform {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
+  key_name   = "deployer-key-${local.environment}"
   public_key = "${file("files/deployer.pub")}"
 }
 
