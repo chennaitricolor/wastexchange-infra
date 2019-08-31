@@ -5,7 +5,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "wex-terraform-state-1564297303"
+    bucket         = "wex-terraform-state-31082019"
     key            = "terraform-remote-state/terraform.tfstate" # this should be unique across terraform project directories
     region         = "us-east-2"
     dynamodb_table = "wex-terraform-state-lock"
@@ -13,7 +13,7 @@ terraform {
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "wex-terraform-state-1564297303"
+  bucket = "wex-terraform-state-31082019"
 
   versioning {
     enabled = true

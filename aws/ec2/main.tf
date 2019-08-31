@@ -1,6 +1,6 @@
 locals {
   environment      = "${terraform.workspace}"
-  account_number   = "719386365084"
+  account_number   = "736483828289"
   ssh_user         = "ubuntu"
   private_key_path = "~/.ssh/wastexchange_rsa"
 }
@@ -16,11 +16,11 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "wex-terraform-state-1564297303"
+    bucket         = "wex-terraform-state-31082019"
     key            = "ec2/terraform.tfstate" # this should be unique across terraform project directories
     region         = "us-east-2"
     dynamodb_table = "wex-terraform-state-lock"
-    role_arn       = "arn:aws:iam::719386365084:role/terraform-deploy"
+    role_arn       = "arn:aws:iam::736483828289:role/terraform-deploy"
   }
 }
 

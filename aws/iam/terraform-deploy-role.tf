@@ -64,6 +64,16 @@ resource "aws_iam_role_policy" "manage_terraform_state" {
       "Effect": "Allow",
       "Action": ["rds:Describe*"],
       "Resource": ["*"]
+    },
+    {
+      "Action": "iam:CreateServiceLinkedRole",
+      "Effect": "Allow",
+      "Resource": "arn:aws:iam::*:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS",
+      "Condition": {
+        "StringLike": {
+          "iam:AWSServiceName":"rds.amazonaws.com"
+        }
+      }
     }
   ]
 }
