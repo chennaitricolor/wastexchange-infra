@@ -42,3 +42,21 @@ resource "aws_security_group" "allow_ssh" {
     Terraform   = true
   }
 }
+
+resource "aws_security_group" "access_to_internet" {
+  name        = "allow_internet"
+  description = "Allow all outbound traffic"
+  vpc_id = "${data.aws_vpc.default.id}"
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "Allow access to internet"
+    Terraform   = true
+  }
+}
