@@ -51,6 +51,24 @@ data "aws_security_group" "access_to_internet" {
   }
 }
 
+data "aws_security_group" "allow_http" {
+  vpc_id = "${data.aws_vpc.default.id}"
+
+  tags = {
+    Name        = "Allow HTTP from internet"
+    Terraform   = true
+  }
+}
+
+data "aws_security_group" "allow_https" {
+  vpc_id = "${data.aws_vpc.default.id}"
+
+  tags = {
+    Name        = "Allow HTTPS from internet"
+    Terraform   = true
+  }
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -73,6 +91,8 @@ resource "aws_instance" "app" {
   key_name      = "${aws_key_pair.deployer.key_name}"
   vpc_security_group_ids = [
     "${data.aws_security_group.allow_ssh.id}",
+    "${data.aws_security_group.allow_http.id}",
+    "${data.aws_security_group.allow_https.id}",
     "${data.aws_security_group.access_to_internet.id}"
   ]
 
