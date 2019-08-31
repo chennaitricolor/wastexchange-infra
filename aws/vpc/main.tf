@@ -96,3 +96,21 @@ resource "aws_security_group" "access_to_internet" {
     Terraform   = true
   }
 }
+
+resource "aws_security_group" "access_to_db" {
+  name        = "access_to_db"
+  description = "Allow inbound to database from VPC"
+  vpc_id = "${data.aws_vpc.default.id}"
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["${data.aws_vpc.default.cidr_block}"]
+  }
+
+  tags = {
+    Name        = "Allow inbound to database from VPC"
+    Terraform   = true
+  }
+}

@@ -28,6 +28,19 @@ resource "random_string" "password" {
   override_special = "!#"
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_security_group" "allow_from_vpc" {
+  vpc_id = "${data.aws_vpc.default.id}"
+
+  tags = {
+    Name        = "Allow inbound to database from VPC"
+    Terraform   = true
+  }
+}
+
 resource "aws_db_instance" "app" {
   identifier          = "wastexchange-${local.environment}"
   allocated_storage   = 20
@@ -39,6 +52,9 @@ resource "aws_db_instance" "app" {
   username            = "wastexchange_${local.environment}"
   password            = "${random_string.password.result}"
   skip_final_snapshot = true
+  vpc_security_group_ids = [
+    "${data.aws_security_group.allow_from_vpc.id}"
+  ]
 
   tags = {
     Name        = "Waste Exchange App DB - ${local.environment}"
