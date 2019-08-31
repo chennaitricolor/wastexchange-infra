@@ -29,6 +29,28 @@ resource "aws_key_pair" "deployer" {
   public_key = "${file("files/deployer.pub")}"
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_security_group" "allow_ssh" {
+  vpc_id = "${data.aws_vpc.default.id}"
+
+  tags = {
+    Name        = "Allow SSH from internet"
+    Terraform   = true
+  }
+}
+
+data "aws_security_group" "access_to_internet" {
+  vpc_id = "${data.aws_vpc.default.id}"
+
+  tags = {
+    Name        = "Allow access to internet"
+    Terraform   = true
+  }
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -49,6 +71,10 @@ resource "aws_instance" "app" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
   key_name      = "${aws_key_pair.deployer.key_name}"
+  vpc_security_group_ids = [
+    "${data.aws_security_group.allow_ssh.id}",
+    "${data.aws_security_group.access_to_internet.id}"
+  ]
 
   tags = {
     Name        = "Waste Exchange App - ${local.environment}"
